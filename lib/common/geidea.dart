@@ -50,8 +50,8 @@ class GeideapayPlugin {
   ///
   initialize(
       {required String publicKey,
-      required String apiPassword,
-      required ServerEnvironmentModel? serverEnvironment}) async {
+        required String apiPassword,
+        required ServerEnvironmentModel? serverEnvironment}) async {
     assert(() {
       if (publicKey.isEmpty) {
         throw GeideaException('publicKey cannot be null or empty');
@@ -122,7 +122,7 @@ class GeideapayPlugin {
 
   Future<OrderApiResponse> checkout(
       {required BuildContext context,
-      required CheckoutOptions checkoutOptions}) async {
+        required CheckoutOptions checkoutOptions}) async {
     _performChecks();
 
     AuthenticationApiResponse? authenticationApiResponse;
@@ -141,7 +141,7 @@ class GeideapayPlugin {
         print(checkoutRequestBodyOfCardComplete!.directSessionRequestBody);
         DirectSessionApiResponse directSessionApiResponse = await createSession(
           directSessionRequestBody:
-              checkoutRequestBodyOfCardComplete!.directSessionRequestBody,
+          checkoutRequestBodyOfCardComplete!.directSessionRequestBody,
         );
         print(directSessionApiResponse);
         if (directSessionApiResponse.session == null) {
@@ -149,18 +149,19 @@ class GeideapayPlugin {
         }
         checkoutRequestBodyOfCardComplete!
             .updateInitiateAuthenticationRequestBody(
-                directSessionApiResponse.session);
+            directSessionApiResponse.session);
 
         print(checkoutRequestBodyOfCardComplete!
             .initiateAuthenticationRequestBody);
         authenticationApiResponse = await initiateAuthentication(
             initiateAuthenticationRequestBody:
-                checkoutRequestBodyOfCardComplete!
-                    .initiateAuthenticationRequestBody);
+            checkoutRequestBodyOfCardComplete!
+                .initiateAuthenticationRequestBody);
         print(authenticationApiResponse);
       },
     );
 
+    debugPrint("Screeen $creditCardScreen");
     var result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => creditCardScreen),
@@ -169,13 +170,13 @@ class GeideapayPlugin {
     if (result == "OK") {
       checkoutOptions.cardOnFile = creditCardScreen.saveCard;
       CheckoutRequestBody checkoutRequestBody =
-          CheckoutRequestBody(checkoutOptions, creditCardScreen.paymentCard);
+      CheckoutRequestBody(checkoutOptions, creditCardScreen.paymentCard);
       try {
         return _Geideapay(
-                publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
+            publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
             .checkout(
           checkoutRequestBody:
-              checkoutRequestBodyOfCardComplete ?? checkoutRequestBody,
+          checkoutRequestBodyOfCardComplete ?? checkoutRequestBody,
           context: context,
           authenticationApiResponse: authenticationApiResponse,
         );
@@ -198,7 +199,7 @@ class GeideapayPlugin {
     _performChecks();
 
     return _Geideapay(
-            publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
+        publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
         .createSession(directSessionRequestBody: directSessionRequestBody);
   }
 
@@ -209,14 +210,14 @@ class GeideapayPlugin {
 
   Future<AuthenticationApiResponse> initiateAuthentication(
       {required InitiateAuthenticationRequestBody
-          initiateAuthenticationRequestBody}) {
+      initiateAuthenticationRequestBody}) {
     _performChecks();
 
     return _Geideapay(
-            publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
+        publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
         .initiateAuthentication(
-            initiateAuthenticationRequestBody:
-                initiateAuthenticationRequestBody);
+        initiateAuthenticationRequestBody:
+        initiateAuthenticationRequestBody);
   }
 
   /// Payer Authentication operation
@@ -226,14 +227,14 @@ class GeideapayPlugin {
 
   Future<AuthenticationApiResponse> payerAuthentication(
       {required PayerAuthenticationRequestBody payerAuthenticationRequestBody,
-      required BuildContext context}) {
+        required BuildContext context}) {
     _performChecks();
 
     return _Geideapay(
-            publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
+        publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
         .payerAuthentication(
-            payerAuthenticationRequestBody: payerAuthenticationRequestBody,
-            context: context);
+        payerAuthenticationRequestBody: payerAuthenticationRequestBody,
+        context: context);
   }
 
   /// Direct Pay operation
@@ -246,7 +247,7 @@ class GeideapayPlugin {
     _performChecks();
 
     return _Geideapay(
-            publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
+        publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
         .directPay(payDirectRequestBody: payDirectRequestBody);
   }
 
@@ -260,7 +261,7 @@ class GeideapayPlugin {
     _performChecks();
 
     return _Geideapay(
-            publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
+        publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
         .refund(refundRequestBody: refundRequestBody);
   }
 
@@ -274,7 +275,7 @@ class GeideapayPlugin {
     _performChecks();
 
     return _Geideapay(
-            publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
+        publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
         .cancel(cancelRequestBody: cancelRequestBody);
   }
 
@@ -288,7 +289,7 @@ class GeideapayPlugin {
     _performChecks();
 
     return _Geideapay(
-            publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
+        publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
         .voidOperation(refundRequestBody: refundRequestBody);
   }
 
@@ -297,38 +298,38 @@ class GeideapayPlugin {
     _performChecks();
 
     return _Geideapay(
-            publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
+        publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl)
         .capture(captureRequestBody: captureRequestBody);
   }
 
   Future<RequestPayApiResponse> generateQRCodeImage(
       {required BuildContext context,
-      required CheckoutOptions checkoutOptions}) async {
+        required CheckoutOptions checkoutOptions}) async {
     _performChecks();
 
     final _geideapay =
-        _Geideapay(publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl);
+    _Geideapay(publicKey, apiPassword, serverEnvironmentModel!.apiBaseUrl);
 
     CheckoutRequestBody checkoutRequestBodyOfQRCode =
-        CheckoutRequestBody(checkoutOptions, null);
+    CheckoutRequestBody(checkoutOptions, null);
 
     checkoutRequestBodyOfQRCode.updateDirectSessionRequestBody(
         publicKey, apiPassword);
 
     DirectSessionApiResponse directSessionApiResponse =
-        await _geideapay.createSession(
-            directSessionRequestBody:
-                checkoutRequestBodyOfQRCode.directSessionRequestBody);
+    await _geideapay.createSession(
+        directSessionRequestBody:
+        checkoutRequestBodyOfQRCode.directSessionRequestBody);
     print(directSessionApiResponse);
     if (directSessionApiResponse.session == null) {
       throw (directSessionApiResponse.detailedResponseMessage!);
     }
 
     Base64ImageApiResponse base64imageApiResponse =
-        await _geideapay.generateQRCodeImage(
-            base64imageRequestBody: Base64ImageRequestBody(
-                directSessionApiResponse.session?.merchantPublicKey,
-                directSessionApiResponse.session?.id));
+    await _geideapay.generateQRCodeImage(
+        base64imageRequestBody: Base64ImageRequestBody(
+            directSessionApiResponse.session?.merchantPublicKey,
+            directSessionApiResponse.session?.id));
 
     print(base64imageApiResponse);
     if (base64imageApiResponse.image == null) {
@@ -337,11 +338,11 @@ class GeideapayPlugin {
 
     RequestPayApiResponse requestPayApiResponse = await _geideapay.requestToPay(
         requestToPayRequestBody: RequestToPayRequestBody(
-      checkoutOptions.qrConfiguration?.phoneNumber,
-      directSessionApiResponse.session?.merchantPublicKey,
-      base64imageApiResponse.paymentIntentId,
-      directSessionApiResponse.session?.id,
-    ));
+          checkoutOptions.qrConfiguration?.phoneNumber,
+          directSessionApiResponse.session?.merchantPublicKey,
+          base64imageApiResponse.paymentIntentId,
+          directSessionApiResponse.session?.id,
+        ));
 
     print(requestPayApiResponse);
     if (requestPayApiResponse.responseCode != '00000') {
@@ -377,7 +378,7 @@ class GeideapayPlugin {
     if (!sdkInitialized) {
       throw GeideaSdkNotInitializedException(
           'Geideapay SDK has not been initialized. The SDK has'
-          ' to be initialized before use');
+              ' to be initialized before use');
     }
   }
 }
@@ -398,12 +399,12 @@ class _Geideapay {
       if (authenticationApiResponse == null) {
         checkoutRequestBody.updateDirectSessionRequestBody(
             publicKey, apiPassword);
-        print(checkoutRequestBody.directSessionRequestBody);
+        debugPrint("Checkout Bodyyyyy: ${checkoutRequestBody.directSessionRequestBody}");
         DirectSessionApiResponse directSessionApiResponse = await createSession(
           directSessionRequestBody:
-              checkoutRequestBody.directSessionRequestBody,
+          checkoutRequestBody.directSessionRequestBody,
         );
-        print(directSessionApiResponse);
+        debugPrint('Responseeeeeeee : $directSessionApiResponse');
         if (directSessionApiResponse.session == null) {
           throw (directSessionApiResponse.detailedResponseMessage!);
         }
@@ -413,8 +414,8 @@ class _Geideapay {
         print(checkoutRequestBody.initiateAuthenticationRequestBody);
         authenticationApiResponse = await initiateAuthentication(
             initiateAuthenticationRequestBody:
-                checkoutRequestBody.initiateAuthenticationRequestBody);
-        print(authenticationApiResponse);
+            checkoutRequestBody.initiateAuthenticationRequestBody);
+        debugPrint("Authhhh Responseee: $authenticationApiResponse");
       }
 
       if (authenticationApiResponse.orderId == null) {
@@ -424,159 +425,179 @@ class _Geideapay {
           authenticationApiResponse.orderId);
 
       print(checkoutRequestBody.payerAuthenticationRequestBody);
+      debugPrint("77");
+
       AuthenticationApiResponse payerAuthenticationApiResponse =
-          await payerAuthentication(
-              payerAuthenticationRequestBody:
-                  checkoutRequestBody.payerAuthenticationRequestBody,
-              context: context);
+      await payerAuthentication(
+          payerAuthenticationRequestBody:
+          checkoutRequestBody.payerAuthenticationRequestBody,
+          context: context);
       print(payerAuthenticationApiResponse);
+      debugPrint("88");
 
       checkoutRequestBody.updatePayDirectRequestBody(
           payerAuthenticationApiResponse.threeDSecureId);
+      debugPrint("99");
 
       print(checkoutRequestBody.payDirectRequestBody);
       OrderApiResponse orderApiResponse = await directPay(
           payDirectRequestBody: checkoutRequestBody.payDirectRequestBody);
-      print(orderApiResponse);
+      print("REsponseeeeeeee: ${orderApiResponse}");
 
       if (checkoutRequestBody.returnUrl != null) {
+        debugPrint("1");
         Uri mainReturnURI = Uri.parse(checkoutRequestBody.returnUrl.toString());
+        debugPrint("2");
 
         Map<String, String> mainReturnUriParam = {};
         mainReturnUriParam.addAll(mainReturnURI.queryParameters);
         mainReturnUriParam
             .addAll({"response": json.encode(orderApiResponse.toMap())});
-
+        debugPrint("3");
+        debugPrint("Main Return Urllll: ${mainReturnURI}");
+        debugPrint("Main errorrrrrrr Messageeeeee : ${orderApiResponse.detailedResponseMessage}");
         String finalReturnUrl = Path.join(mainReturnURI.toString(),
             orderApiResponse.responseMessage ?? "Failed");
+        debugPrint("4");
 
         Uri returnUrlURI = Uri.parse(finalReturnUrl)
             .replace(queryParameters: mainReturnUriParam);
+        debugPrint("5");
 
-        if (!await launchUrl(returnUrlURI,
-            mode: LaunchMode.externalApplication)) {
-          print('Could not launch');
+        debugPrint("URLLLLLLLL::::${returnUrlURI}");
+        if(returnUrlURI.toString().contains("https://www.hagzz.com/Success")){
+          return orderApiResponse;
+        }else if (returnUrlURI.toString().contains("https://www.hagzz.com/Failed")){
+          return OrderApiResponse(
+            responseCode: '400',
+            responseMessage: "Payment failed",
+          );
         }
+
       }
       return orderApiResponse;
     } catch (e) {
-      throw (e);
+      debugPrint("Errrorrrrr: ${e.toString()}");
+      return OrderApiResponse(
+        responseCode: '400',
+        responseMessage: e.toString(),
+      );
     }
   }
 
   Future<DirectSessionApiResponse> createSession(
       {required DirectSessionRequestBody directSessionRequestBody}) {
     return SessionTransactionManager(
-            context: null,
-            service: SessionService(),
-            apiPassword: apiPassword,
-            publicKey: publicKey,
-            baseUrl: baseUrl,
-            directSessionRequestBody: directSessionRequestBody)
+        context: null,
+        service: SessionService(),
+        apiPassword: apiPassword,
+        publicKey: publicKey,
+        baseUrl: baseUrl,
+        directSessionRequestBody: directSessionRequestBody)
         .createSession();
   }
 
   Future<AuthenticationApiResponse> initiateAuthentication(
       {required InitiateAuthenticationRequestBody
-          initiateAuthenticationRequestBody}) {
+      initiateAuthenticationRequestBody}) {
     return AuthenticationTransactionManager(
-            context: null,
-            service: AuthenticationService(),
-            apiPassword: apiPassword,
-            publicKey: publicKey,
-            baseUrl: baseUrl,
-            initiateAuthenticationRequestBody:
-                initiateAuthenticationRequestBody)
+        context: null,
+        service: AuthenticationService(),
+        apiPassword: apiPassword,
+        publicKey: publicKey,
+        baseUrl: baseUrl,
+        initiateAuthenticationRequestBody:
+        initiateAuthenticationRequestBody)
         .initiateAuthentication();
   }
 
   Future<OrderApiResponse> directPay(
       {required PayDirectRequestBody payDirectRequestBody}) {
     return PayTransactionManager(
-            service: PayService(),
-            apiPassword: apiPassword,
-            publicKey: publicKey,
-            baseUrl: baseUrl,
-            payDirectRequestBody: payDirectRequestBody)
+        service: PayService(),
+        apiPassword: apiPassword,
+        publicKey: publicKey,
+        baseUrl: baseUrl,
+        payDirectRequestBody: payDirectRequestBody)
         .payDirect();
   }
 
   Future<AuthenticationApiResponse> payerAuthentication(
       {required PayerAuthenticationRequestBody payerAuthenticationRequestBody,
-      required BuildContext context}) {
+        required BuildContext context}) {
     return AuthenticationTransactionManager(
-            context: context,
-            service: AuthenticationService(),
-            apiPassword: apiPassword,
-            publicKey: publicKey,
-            baseUrl: baseUrl,
-            payerAuthenticationRequestBody: payerAuthenticationRequestBody)
+        context: context,
+        service: AuthenticationService(),
+        apiPassword: apiPassword,
+        publicKey: publicKey,
+        baseUrl: baseUrl,
+        payerAuthenticationRequestBody: payerAuthenticationRequestBody)
         .payerAuthentication();
   }
 
   Future<OrderApiResponse> refund(
       {required RefundRequestBody refundRequestBody}) {
     return PayTransactionManager(
-            service: PayService(),
-            apiPassword: apiPassword,
-            publicKey: publicKey,
-            baseUrl: baseUrl,
-            refundRequestBody: refundRequestBody)
+        service: PayService(),
+        apiPassword: apiPassword,
+        publicKey: publicKey,
+        baseUrl: baseUrl,
+        refundRequestBody: refundRequestBody)
         .refund();
   }
 
   Future<OrderApiResponse> cancel(
       {required CancelRequestBody cancelRequestBody}) {
     return PayTransactionManager(
-            service: PayService(),
-            apiPassword: apiPassword,
-            publicKey: publicKey,
-            baseUrl: baseUrl,
-            cancelRequestBody: cancelRequestBody)
+        service: PayService(),
+        apiPassword: apiPassword,
+        publicKey: publicKey,
+        baseUrl: baseUrl,
+        cancelRequestBody: cancelRequestBody)
         .cancel();
   }
 
   Future<OrderApiResponse> voidOperation(
       {required RefundRequestBody refundRequestBody}) {
     return PayTransactionManager(
-            service: PayService(),
-            apiPassword: apiPassword,
-            publicKey: publicKey,
-            baseUrl: baseUrl,
-            refundRequestBody: refundRequestBody)
+        service: PayService(),
+        apiPassword: apiPassword,
+        publicKey: publicKey,
+        baseUrl: baseUrl,
+        refundRequestBody: refundRequestBody)
         .voidOperation();
   }
 
   Future<OrderApiResponse> capture(
       {required CaptureRequestBody captureRequestBody}) {
     return PayTransactionManager(
-            service: PayService(),
-            apiPassword: apiPassword,
-            publicKey: publicKey,
-            baseUrl: baseUrl,
-            captureRequestBody: captureRequestBody)
+        service: PayService(),
+        apiPassword: apiPassword,
+        publicKey: publicKey,
+        baseUrl: baseUrl,
+        captureRequestBody: captureRequestBody)
         .capture();
   }
 
   Future<Base64ImageApiResponse> generateQRCodeImage(
       {required Base64ImageRequestBody base64imageRequestBody}) {
     return Base64ImageTransactionManager(
-            service: Base64ImageService(),
-            apiPassword: apiPassword,
-            publicKey: publicKey,
-            baseUrl: baseUrl,
-            base64imageRequestBody: base64imageRequestBody)
+        service: Base64ImageService(),
+        apiPassword: apiPassword,
+        publicKey: publicKey,
+        baseUrl: baseUrl,
+        base64imageRequestBody: base64imageRequestBody)
         .generateImage();
   }
 
   Future<RequestPayApiResponse> requestToPay(
       {required RequestToPayRequestBody requestToPayRequestBody}) {
     return PayTransactionManager(
-            service: PayService(),
-            apiPassword: apiPassword,
-            publicKey: publicKey,
-            baseUrl: baseUrl,
-            requestToPayRequestBody: requestToPayRequestBody)
+        service: PayService(),
+        apiPassword: apiPassword,
+        publicKey: publicKey,
+        baseUrl: baseUrl,
+        requestToPayRequestBody: requestToPayRequestBody)
         .requestToPay();
   }
 }
