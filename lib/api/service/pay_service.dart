@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:geideapay/api/response/order_api_response.dart';
 import 'package:geideapay/api/service/base_service.dart';
 import 'package:geideapay/api/service/contracts/pay_service_contract.dart';
@@ -65,21 +66,37 @@ class PayService with BaseApiService implements PayServiceContract {
       String publicKey, String apiPassword) async {
     genHeaders(publicKey, apiPassword);
 
-    http.Response response = await http.post(url.toUri(),
-        body: jsonEncode(fields), headers: headers);
-    var body = response.body;
+    Dio dio=Dio(
+        BaseOptions(
+          baseUrl: url,
+          receiveDataWhenStatusError: true,
+          followRedirects: false,
+          // will not throw errors
+          validateStatus: (status) => true,
+        )
+    );
+    dio.options.headers=headers;
+    Response myResponse=await dio.post(
+      url,
+      data: fields
+    );
 
-    var statusCode = response.statusCode;
-
-    switch (statusCode) {
-      case HttpStatus.ok:
-        Map<String, dynamic> responseBody = json.decode(body);
-        return OrderApiResponse.fromMap(responseBody);
-      case HttpStatus.gatewayTimeout:
-        throw PayException('Gateway timeout error');
-      default:
-        throw PayException(Strings.unKnownResponse);
-    }
+    return OrderApiResponse.fromMap(myResponse.data);
+    // http.Response response = await http.post(url.toUri(),
+    //     body: jsonEncode(fields), headers: headers);
+    // var body = response.body;
+    //
+    // var statusCode = response.statusCode;
+    //
+    // switch (statusCode) {
+    //   case HttpStatus.ok:
+    //     Map<String, dynamic> responseBody = json.decode(body);
+    //     return OrderApiResponse.fromMap(responseBody);
+    //   case HttpStatus.gatewayTimeout:
+    //     throw PayException('Gateway timeout error');
+    //   default:
+    //     throw PayException(Strings.unKnownResponse);
+    // }
   }
 
   Future<RequestPayApiResponse> genRequestPayResponse(String url, Map<String, Object?>? fields,

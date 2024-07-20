@@ -453,7 +453,8 @@ class _Geideapay {
         Uri returnUrlURI = Uri.parse(finalReturnUrl)
             .replace(queryParameters: mainReturnUriParam);
 
-        if (!await canLaunchUrl(returnUrlURI)) {
+        if (!await launchUrl(returnUrlURI,
+            mode: LaunchMode.externalApplication)) {
           print('Could not launch');
         }
       }
