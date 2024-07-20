@@ -78,14 +78,14 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
           },
           onPageFinished: (String url) {
             print('Page finished loading: $url');
-            if (url.startsWith(widget.returnURL??'')) {
-              Navigator.of(context).pop();
-            }
+            // if (url.startsWith(widget.returnURL)) {
+            //   Navigator.of(context).pop();
+            // }
           },
           navigationDelegate: (webviewf.NavigationRequest request) {
             print('allowing navigation to $request');
             if (request.url.startsWith(widget.returnURL ?? "")) {
-              Navigator.of(context).pop();
+              // Navigator.of(context).pop();
               return webviewf.NavigationDecision.prevent;
             }
             return webviewf.NavigationDecision.navigate;
