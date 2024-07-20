@@ -9,6 +9,7 @@ import 'package:geideapay/common/exceptions.dart';
 import 'package:geideapay/common/my_strings.dart';
 import 'package:geideapay/common/extensions.dart';
 import 'package:http/http.dart' as http;
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../response/request_pay_api_response.dart';
 
@@ -75,6 +76,15 @@ class PayService with BaseApiService implements PayServiceContract {
           validateStatus: (status) => true,
         )
     );
+
+    dio.interceptors.add(PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        error: true,
+        compact: true,
+        maxWidth: 90));
     dio.options.headers=headers;
     Response myResponse=await dio.post(
       url,
