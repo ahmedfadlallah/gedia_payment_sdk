@@ -231,15 +231,13 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
   /// Card number, Exp. year and Card holder name
   ///
   Widget _buildFrontContainer() {
-    final TextStyle defaultTextStyle =
-        Theme.of(context).textTheme.headline6!.merge(
-              const TextStyle(
-                color: Colors.white,
-                fontFamily: 'halter',
-                fontSize: 16,
-                package: 'geideapay',
-              ),
-            );
+    const TextStyle defaultTextStyle =
+   TextStyle(
+      color: Colors.white,
+      fontFamily: 'halter',
+      fontSize: 16,
+      package: 'geideapay',
+    );
 
     final String number = widget.obscureCardNumber
         ? widget.cardNumber!.replaceAll(RegExp(r'(?<=.{4})\d(?=.{4})'), '*')
@@ -342,15 +340,13 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
   /// Builds a back container containing cvv
   ///
   Widget _buildBackContainer() {
-    final TextStyle defaultTextStyle =
-        Theme.of(context).textTheme.headline6!.merge(
-              const TextStyle(
-                color: Colors.black,
-                fontFamily: 'halter',
-                fontSize: 16,
-                package: 'geideapay',
-              ),
-            );
+    const TextStyle defaultTextStyle =
+    TextStyle(
+      color: Colors.black,
+      fontFamily: 'halter',
+      fontSize: 16,
+      package: 'geideapay',
+    );
 
     final String cvv = widget.obscureCardCvv
         ? widget.cvvCode!.replaceAll(RegExp(r'\d'), '*')

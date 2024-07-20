@@ -228,9 +228,7 @@ class CreditCardScreenState extends State<CreditCardScreen> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
-                                      ),
-                                      primary:
-                                          widget.checkoutOptions.payButtonColor,
+                                      ), backgroundColor: widget.checkoutOptions.payButtonColor,
                                     ),
                                     child: Container(
                                       margin: const EdgeInsets.all(12),
@@ -281,8 +279,7 @@ class CreditCardScreenState extends State<CreditCardScreen> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
-                                      ),
-                                      primary: widget
+                                      ), backgroundColor: widget
                                           .checkoutOptions.cancelButtonColor,
                                     ),
                                     child: Container(
@@ -849,9 +846,7 @@ class CreditCardScreenState extends State<CreditCardScreen> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
-                                      ),
-                                      primary:
-                                          widget.checkoutOptions.payButtonColor,
+                                      ), backgroundColor: widget.checkoutOptions.payButtonColor,
                                     ),
                                     child: Container(
                                       margin: const EdgeInsets.all(12),
@@ -910,8 +905,7 @@ class CreditCardScreenState extends State<CreditCardScreen> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
-                                      ),
-                                      primary: widget
+                                      ), backgroundColor: widget
                                           .checkoutOptions.cancelButtonColor,
                                     ),
                                     child: Container(
