@@ -35,7 +35,8 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
     super.initState();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))..addJavaScriptChannel('JavascriptChannel',
+      ..setBackgroundColor(const Color(0x00000000))
+      ..addJavaScriptChannel('JavascriptChannel',
           onMessageReceived: (javaMessage){
 
           },
@@ -96,6 +97,7 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
 
         );
       }),
+
     );
   }
 
