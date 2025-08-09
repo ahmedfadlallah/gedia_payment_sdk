@@ -77,7 +77,7 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
           },
         ),
       )
-      ..loadRequest(Uri.parse(''));
+      ..loadRequest(Uri.parse(url));
 
   }
 
