@@ -36,12 +36,7 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
-      ..addJavaScriptChannel('',
-          onMessageReceived: (javaMessage){
-
-          },
-
-      )..setNavigationDelegate(NavigationDelegate(
+    ..setNavigationDelegate(NavigationDelegate(
         onNavigationRequest: (webviewf.NavigationRequest request) {
           print('allowing navigation to $request');
           if (request.url.startsWith(widget.returnURL ?? "")) {
