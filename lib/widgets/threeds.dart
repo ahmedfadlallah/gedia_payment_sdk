@@ -73,7 +73,7 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
           },
         ),
       )
-      ..loadRequest(Uri.parse(widget.html??''));
+      ..loadHtmlString(widget.html??'');
 
   }
 
