@@ -36,7 +36,7 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
-      ..addJavaScriptChannel('JavascriptChannel',
+      ..addJavaScriptChannel('',
           onMessageReceived: (javaMessage){
 
           },
@@ -93,8 +93,6 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
       body: Builder(builder: (BuildContext context) {
         return WebViewWidget(
           controller: controller,
-
-
         );
       }),
 
