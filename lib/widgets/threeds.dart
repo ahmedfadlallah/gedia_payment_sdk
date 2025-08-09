@@ -53,7 +53,6 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
       ))
       ..setNavigationDelegate(
         NavigationDelegate(
-
           onProgress: (int progress) {
             print('WebView is loading (progress : $progress%)');
           },
@@ -64,7 +63,6 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
               Navigator.of(context).pop();
             }
           },
-
           onPageStarted: (String url) {
             print('Page started loading: $url, ${widget.returnURL}');
             if (url.startsWith(widget.returnURL ?? "")) {
@@ -77,10 +75,9 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
             //   Navigator.of(context).pop();
             // }
           },
-
         ),
       )
-      ..loadRequest(Uri.parse('https://hagzz.com/termsAndConditions.html'));
+      ..loadRequest(Uri.parse(''));
 
   }
 
@@ -103,8 +100,5 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
   }
 
 
-  Future<void> _onLoadHtmlStringExample(
-      WebViewController controller, BuildContext context, String? html) async {
-    await controller.loadHtmlString(html!);
-  }
+
 }
