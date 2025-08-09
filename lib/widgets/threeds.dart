@@ -1,20 +1,6 @@
-import 'dart:async';
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:html/parser.dart' as htmlparser;
-import 'package:html/dom.dart' as dom;
-import 'package:http/http.dart' as http;
-import 'package:webview_flutter/webview_flutter.dart' as webviewf;
 import 'package:webview_flutter/webview_flutter.dart';
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-import 'dart:io' show Platform;
-
-import 'package:flutter/material.dart';
 
 class ThreeDSPage extends StatefulWidget {
   final String? html;
@@ -27,26 +13,23 @@ class ThreeDSPage extends StatefulWidget {
 }
 
 class _ThreeDSPageState extends State<ThreeDSPage> {
-  late WebViewController controller;
-
+  late final WebViewController controller;
 
   @override
   void initState() {
     super.initState();
+
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
-    ..setNavigationDelegate(NavigationDelegate(
-        onNavigationRequest: (webviewf.NavigationRequest request) {
-          print('allowing navigation to $request');
-          if (request.url.startsWith(widget.returnURL ?? "")) {
-            // Navigator.of(context).pop();
-            return webviewf.NavigationDecision.prevent;
-          }
-          return webviewf.NavigationDecision.navigate;
+      ..addJavaScriptChannel(
+        'Toaster',
+        onMessageReceived: (JavaScriptMessage message) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message.message)),
+          );
         },
-
-      ))
+      )
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
@@ -54,7 +37,6 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
           },
           onWebResourceError: (WebResourceError error) {
             print('WebResourceError: $error');
-
             if (Platform.isIOS) {
               Navigator.of(context).pop();
             }
@@ -67,33 +49,26 @@ class _ThreeDSPageState extends State<ThreeDSPage> {
           },
           onPageFinished: (String url) {
             print('Page finished loading: $url');
-            // if (url.startsWith(widget.returnURL)) {
-            //   Navigator.of(context).pop();
-            // }
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            print('allowing navigation to ${request.url}');
+            if (request.url.startsWith(widget.returnURL ?? "")) {
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
           },
         ),
       )
-      ..loadHtmlString(widget.html??'');
-
+      ..loadHtmlString(widget.html ?? '');
   }
-
-  String url = "";
-  double progress = 0;
-  final urlController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("3DS")),
-      body: Builder(builder: (BuildContext context) {
-        return WebViewWidget(
-          controller: controller,
-        );
-      }),
-
+      appBar: AppBar(title: const Text("3DS")),
+      body: WebViewWidget(
+        controller: controller,
+      ),
     );
   }
-
-
-
 }
